@@ -12,6 +12,33 @@ This repository analyzes the Global Weather Repository dataset and turns it into
 - Forecasting with ARIMA, Prophet, XGBoost, and a stacked ensemble.
 - Advanced analyses for climate trends, AQI relationships, SHAP feature importance, and geospatial patterns.
 - Interactive outputs in `reports/figures/`, a final HTML report, and a Plotly Dash dashboard.
+## Advanced Features
+
+### Anomaly Detection
+- **Isolation Forest** for unsupervised outlier detection across global weather observations
+- **Local Outlier Factor (LOF)** for density-based anomaly scoring
+- Processed anomaly-tagged dataset exported as `data/weather_with_anomalies.csv`
+
+### Ensemble Forecasting
+- **ARIMA** — baseline time-series forecasting
+- **Prophet** — seasonal decomposition and trend forecasting
+- **XGBoost** — gradient boosting with engineered lag and rolling features
+- **Stacked Ensemble** — combines all three models for best-in-class predictions (MAE: 2.456°C, R²: 0.219)
+
+### Explainability
+- **SHAP-based feature importance** to interpret model predictions and identify key weather drivers
+
+### Geospatial Analysis
+- **Folium spatial heatmaps** for visualizing weather intensity across regions
+- **Country-level choropleth visualizations** for global pattern comparison
+
+### Climate & Environmental Correlations
+- **AQI vs. weather correlation study** to explore air quality relationships with temperature, humidity, and wind
+- **Continent-level climate pattern analysis** across 211 countries and 257 cities
+
+### Interactive Dashboard
+- **Plotly Dash dashboard** (`dashboard.py`) for real-time exploration of forecasts, anomalies, and geospatial trends
+- Final HTML report available at `reports/final_report.html`
 
 ## Project Structure
 
