@@ -1,0 +1,37 @@
+# Requirements File for Weather Trend Forecasting
+
+# Core Data Science & ML Libraries
+pandas==2.2.2
+numpy==1.26.4
+matplotlib==3.8.4
+seaborn==0.13.2
+plotly==5.22.0
+scikit-learn==1.5.0
+statsmodels==0.14.2
+scipy==1.13.0
+
+# Time-Series Forecasting
+prophet==1.1.5
+pmdarima==2.0.4
+xgboost==2.0.3
+lightgbm==4.3.0
+
+# Anomaly Detection & Interpretation
+pyod==2.0.0
+shap==0.45.1
+yellowbrick==1.5
+
+# Geospatial & Visualization
+geopandas==0.14.4
+folium==0.16.0
+pycountry-convert==0.7.2
+
+# Jupyter & Dashboard
+jupyter==1.0.0
+nbformat==5.10.4
+dash==2.14.2
+
+# Optional: Testing & Code Quality
+pytest==7.4.3
+black==23.12.1
+flake8==6.1.0

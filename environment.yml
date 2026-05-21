@@ -1,0 +1,30 @@
+name: weather-forecast
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pandas
+  - numpy
+  - matplotlib
+  - seaborn
+  - plotly
+  - scikit-learn
+  - statsmodels
+  - xgboost
+  - lightgbm
+  - geopandas
+  - folium
+  - scipy
+  - jupyter
+  - pip
+  - pip:
+    - prophet==1.1.5
+    - pmdarima==2.0.4
+    - pyod==2.0.0
+    - shap==0.45.1
+    - yellowbrick==1.5
+    - pycountry-convert==0.7.2
+    - dash==2.14.2
+    - pytest==7.4.3
+    - black==23.12.1
