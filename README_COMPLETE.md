@@ -1,30 +1,30 @@
-# 🌦️ Global Weather Trend Forecasting — PM Accelerator AI Assessment
+#  Global Weather Trend Forecasting — PM Accelerator AI Assessment
 
 > **PM Accelerator Mission:** Empower the next generation of AI professionals through hands-on experience, mentorship, and real-world projects — bridging the gap between academic learning and industry-ready skills.
 
 ---
 
-## 📋 Project Overview
+##  Project Overview
 
 This project analyzes the **Global Weather Repository** (141,508+ records across 211 countries, 257 cities) to forecast weather trends using both basic and advanced data science techniques.
 
 ### Scope: Complete Advanced Assessment
 
-✅ **Data Cleaning & Preprocessing** — 6-step pipeline with temporal features & normalization  
-✅ **Exploratory Data Analysis** — Trends, correlations, seasonal patterns, geographic insights  
-✅ **Anomaly Detection** — Isolation Forest + LOF consensus detection  
-✅ **Time-Series Forecasting** — ARIMA, Prophet, XGBoost models  
-✅ **Ensemble Modeling** — Stacked meta-learner combining all models  
-✅ **Unique Advanced Analyses:**
-- 🌍 Climate Pattern Analysis (long-term continental trends)
-- 💨 Environmental Impact (AQI correlation with weather)
-- 🔍 Feature Importance (SHAP TreeExplainer)
-- 🗺️ Spatial Analysis (Folium heatmaps + interactive maps)
-- 🌐 Geographical Patterns (Choropleth by country/continent)
+ **Data Cleaning & Preprocessing** — 6-step pipeline with temporal features & normalization  
+ **Exploratory Data Analysis** — Trends, correlations, seasonal patterns, geographic insights  
+ **Anomaly Detection** — Isolation Forest + LOF consensus detection  
+ **Time-Series Forecasting** — ARIMA, Prophet, XGBoost models  
+ **Ensemble Modeling** — Stacked meta-learner combining all models  
+ **Unique Advanced Analyses:**
+-  Climate Pattern Analysis (long-term continental trends)
+-  Environmental Impact (AQI correlation with weather)
+-  Feature Importance (SHAP TreeExplainer)
+-  Spatial Analysis (Folium heatmaps + interactive maps)
+-  Geographical Patterns (Choropleth by country/continent)
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### 1. Clone Repository
 ```bash
@@ -69,7 +69,7 @@ python dashboard.py
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 weather-trend-forecasting/
@@ -134,7 +134,7 @@ weather-trend-forecasting/
 
 ---
 
-## 📊 Dataset Overview
+##  Dataset Overview
 
 **Source:** [Kaggle Global Weather Repository](https://www.kaggle.com/datasets/nelgiriyewithana/global-weather-repository)
 
@@ -158,10 +158,10 @@ weather-trend-forecasting/
 
 ---
 
-## 🔍 Key Analyses & Results
+##  Key Analyses & Results
 
 ### Data Cleaning Pipeline (Notebook 01)
-✅ **6-Step Approach:**
+ **6-Step Approach:**
 1. Parse dates & sort chronologically
 2. Extract temporal features (year, month, season, day_of_week)
 3. Handle missing values (per-city median imputation)
@@ -176,7 +176,7 @@ weather-trend-forecasting/
 ### Exploratory Data Analysis (Notebooks 02–03)
 
 #### Basic EDA (Notebook 02)
-📈 **Visualizations:**
+ **Visualizations:**
 1. **Global Temperature Trends** — Interactive line plot (Plotly) showing average daily temperature
 2. **Monthly Temperature Distribution** — Boxplot revealing seasonality across globe
 3. **Top Precipitation Cities** — Bar chart identifying wettest locations
@@ -184,7 +184,7 @@ weather-trend-forecasting/
 5. **Precipitation by Season** — Heatmap comparing seasonal patterns
 
 #### Advanced EDA (Notebook 03)
-🔍 **Anomaly Detection:**
+ **Anomaly Detection:**
 - **Isolation Forest:** 2,831 anomalies detected (2% contamination)
 - **LOF (Local Outlier Factor):** 20-neighbor contamination with consensus
 - **Seasonal Decomposition:** 4-panel plots (trend, seasonal, residual, observed)
@@ -199,7 +199,7 @@ weather-trend-forecasting/
 #### ARIMA Model (Notebook 04)
 **City Focus:** London (730-day daily series)
 
-✅ **Workflow:**
+ **Workflow:**
 - ADF test: p-value = 0.44 (non-stationary, differencing applied)
 - Auto-ARIMA: Optimal order (1,1,1) × (0,1,1)₁₂
 - Train/Test: 584 days / 146 days
@@ -237,21 +237,21 @@ weather-trend-forecasting/
 **Results:**
 ### Unique Advanced Analyses (Notebook 06)
 
-#### 1. Climate Pattern Analysis 🌍
+#### 1. Climate Pattern Analysis 
 **Long-term continental temperature trends** over 24 months
 - Africa: Warming trend (+0.3°C year-over-year)
 - Europe: Moderate seasonality, stable
 - Asia: Highest variability (monsoon effects)
 - Visualization: Interactive line plot by continent
 
-#### 2. Environmental Impact 💨
+#### 2. Environmental Impact 
 **Air Quality Index (AQI) vs Weather Parameters**
 - AQI vs Temperature: r = +0.093 (weak positive)
 - AQI vs Humidity: r = -0.282 (moderate negative) → Dry air = higher AQI
 - Seasonal breakdown: AQI peaks in winter (energy demand)
 - Visualization: Interactive scatter with humidity colorscale + OLS trend
 
-#### 3. Feature Importance (SHAP) 🔍
+#### 3. Feature Importance (SHAP) 
 **XGBoost model interpretability using TreeExplainer**
 - **Top 5 Features:**
   1. lag_1 (yesterday's temp: 75% importance) ⭐
@@ -261,13 +261,13 @@ weather-trend-forecasting/
   5. lag_7 (3.3%)
 - Visualizations: Bar plot + beeswarm summary
 
-#### 4. Spatial Analysis 🗺️
+#### 4. Spatial Analysis 
 **Interactive global temperature heatmap using Folium**
 - Heat layer with 15px radius, 10px blur
 - Covers all 257 cities with per-city average temperature
 - Enables geographic pattern identification
 
-#### 5. Geographical Patterns 🌐
+#### 5. Geographical Patterns 
 **Choropleth map by country with temperature color scale**
 - Color scale: RdYlBu_r (diverging: red=hot, blue=cold)
 - Interactive hover showing exact temp per country
@@ -275,20 +275,20 @@ weather-trend-forecasting/
 
 ---
 
-## 📈 Model Performance Summary
+##  Model Performance Summary
 
 | Model | MAE (°C) | RMSE (°C) | R² | Advantage |
 |-------|----------|----------|-----|-----------|
 | ARIMA | 0.059 | 0.076 | -0.041 | Classical time-series ⏳ |
-| Prophet | ~0.072 | ~0.088 | -0.382 | Automated seasonality 📅 |
+| Prophet | ~0.072 | ~0.088 | -0.382 | Automated seasonality  |
 | XGBoost | ~0.054 | ~0.069 | 0.172 | Typically strong performer |
-| **Ensemble** | **~0.053** | **~0.067** | **~0.219** | **Expected to outperform individual models** 🏆 |
+| **Ensemble** | **~0.053** | **~0.067** | **~0.219** | **Expected to outperform individual models**  |
 
 **Key Insight:** Ensemble leverages complementary strengths (ARIMA captures temporal dependence, Prophet handles seasonality, XGBoost captures non-linearities).
 
 ---
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 | Category | Technologies |
 |----------|--------------|
@@ -307,11 +307,11 @@ weather-trend-forecasting/
 
 ---
 
-## 📊 Interactive Dashboard Features
+##  Interactive Dashboard Features
 
 **URL:** `http://127.0.0.1:8050` (run `python dashboard.py`)
 
-🎯 **Components:**
+ **Components:**
 - City selector dropdown (257 options)
 - Real-time temperature trend chart
 - Precipitation pattern chart
@@ -323,7 +323,7 @@ weather-trend-forecasting/
 
 ---
 
-## 🎬 Demo Video
+##  Demo Video
 
 **Duration:** 2 minutes  
 **Content:**
@@ -337,7 +337,7 @@ weather-trend-forecasting/
 
 ---
 
-## ✅ Submission Checklist
+##  Submission Checklist
 
 Before final GitHub push:
 
@@ -357,7 +357,7 @@ Before final GitHub push:
 
 ---
 
-## 📚 Documentation Files
+##  Documentation Files
 
 | File | Purpose |
 |------|---------|
@@ -370,7 +370,7 @@ Before final GitHub push:
 
 ---
 
-## 🎯 Key Findings & Insights
+##  Key Findings & Insights
 
 ### Data Insights
 1. **Global temperature stability:** Mean 0.61°C (normalized), low volatility
@@ -391,7 +391,7 @@ Before final GitHub push:
 
 ---
 
-## 🚀 Future Enhancements
+##  Future Enhancements
 
 - Multi-step ahead forecasting (7/14-day predictions)
 - Uncertainty quantification (prediction intervals)
@@ -402,7 +402,7 @@ Before final GitHub push:
 
 ---
 
-## 👤 Author
+##  Author
 
 **[Your Name]**  
 AI/Data Science | PM Accelerator Intern  
@@ -410,13 +410,13 @@ AI/Data Science | PM Accelerator Intern
 
 ---
 
-## 📝 License
+##  License
 
 This project is submitted as part of the **PM Accelerator AI Engineer Internship Assessment**.
 
 ---
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - **Dataset:** [Kaggle Global Weather Repository](https://www.kaggle.com/datasets/nelgiriyewithana/global-weather-repository) by @nelgiriyewithana
 - **PM Accelerator:** [pmaccelerator.io](https://www.pmaccelerator.io) — Empowering the next generation of AI professionals
@@ -424,6 +424,6 @@ This project is submitted as part of the **PM Accelerator AI Engineer Internship
 
 ---
 
-**Built with ❤️ for PM Accelerator**
+**Built with  for PM Accelerator**
 
 Last Updated: May 15, 2026

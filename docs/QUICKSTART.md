@@ -1,4 +1,4 @@
-# 🚀 QUICK START GUIDE
+#  QUICK START GUIDE
 
 ## Your Complete Weather Forecasting Project — Ready to Build
 
@@ -6,11 +6,11 @@ This folder contains everything you need to win the PM Accelerator AI Engineer I
 
 ---
 
-## 📂 What's Here?
+##  What's Here?
 
 | File | Purpose |
 |------|---------|
-| `BUILD_GUIDE.md` | **👈 START HERE** — Complete step-by-step implementation guide |
+| `BUILD_GUIDE.md` | ** START HERE** — Complete step-by-step implementation guide |
 | `README.md` | Your GitHub repository template (copy to your repo) |
 | `requirements.txt` | Python dependencies (for `pip install -r requirements.txt`) |
 | `environment.yml` | Conda environment file (alternative to pip) |
@@ -22,15 +22,15 @@ This folder contains everything you need to win the PM Accelerator AI Engineer I
 
 ---
 
-## ⚡ 5-Minute Setup
+##  5-Minute Setup
 
 ### Step 1: Create GitHub Repository
 ```bash
 # Go to github.com → New Repository
 # Name: weather-trend-forecasting
 # Description: Global weather forecasting using ARIMA, Prophet, XGBoost & ensemble
-# Public: ✓
-# Initialize with README: ✗ (you'll add your own)
+# Public: 
+# Initialize with README:  (you'll add your own)
 ```
 
 ### Step 2: Clone & Set Up Local
@@ -70,11 +70,11 @@ jupyter notebook
 # Then open notebooks/01_data_cleaning.ipynb and follow BUILD_GUIDE.md
 ```
 
-**⏱️ Total time: 5 minutes. You're ready!**
+**⏱ Total time: 5 minutes. You're ready!**
 
 ---
 
-## 📚 Recommended Workflow
+##  Recommended Workflow
 
 Follow these notebooks **in order**:
 
@@ -114,35 +114,35 @@ Follow these notebooks **in order**:
 
 ---
 
-## 🎯 Minimum Viable Submission (Basic Track)
+##  Minimum Viable Submission (Basic Track)
 
 If you're short on time, **at minimum** deliver:
 
-✅ Notebooks 1–4 (data cleaning, basic EDA, ARIMA)  
-✅ Model metrics (MAE, RMSE, R²)  
-✅ 2 visualizations (temperature trend + precipitation)  
-✅ GitHub README  
-✅ 2-minute demo video  
+ Notebooks 1–4 (data cleaning, basic EDA, ARIMA)  
+ Model metrics (MAE, RMSE, R²)  
+ 2 visualizations (temperature trend + precipitation)  
+ GitHub README  
+ 2-minute demo video  
 
 **Estimated time: 6 hours**
 
 ---
 
-## 🏆 Full Advanced Submission (Recommended)
+##  Full Advanced Submission (Recommended)
 
-✅ All notebooks (1–6)  
-✅ 3+ forecasting models + ensemble  
-✅ 5+ unique visualizations  
-✅ SHAP feature importance  
-✅ Spatial analysis (Folium + Choropleth)  
-✅ Dash dashboard  
-✅ Production code (type hints, docstrings, modular design)  
+ All notebooks (1–6)  
+ 3+ forecasting models + ensemble  
+ 5+ unique visualizations  
+ SHAP feature importance  
+ Spatial analysis (Folium + Choropleth)  
+ Dash dashboard  
+ Production code (type hints, docstrings, modular design)  
 
 **Estimated time: 15–18 hours**
 
 ---
 
-## 🛠️ Code Template Usage
+##  Code Template Usage
 
 ### Data Loading (from `src/data_loader.py`)
 ```python
@@ -163,7 +163,7 @@ plot_correlation_matrix(df_clean, save_path="reports/figures/corr.png")
 
 ---
 
-## ✅ Before You Start
+##  Before You Start
 
 - [ ] Python 3.11+ installed (`python --version`)
 - [ ] Git installed and configured (`git config --list`)
@@ -174,7 +174,7 @@ plot_correlation_matrix(df_clean, save_path="reports/figures/corr.png")
 
 ---
 
-## 📞 Stuck? Here's What to Do
+##  Stuck? Here's What to Do
 
 | Problem | Solution |
 |---------|----------|
@@ -187,7 +187,7 @@ plot_correlation_matrix(df_clean, save_path="reports/figures/corr.png")
 
 ---
 
-## 🎬 Demo Video Tips
+##  Demo Video Tips
 
 - **Record after everything is built** (use DEMO_SCRIPT.md)
 - **Keep it to 2 minutes exactly**
@@ -196,7 +196,7 @@ plot_correlation_matrix(df_clean, save_path="reports/figures/corr.png")
 
 ---
 
-## 📋 Final Submission Checklist
+##  Final Submission Checklist
 
 **One week before deadline, run through SUBMISSION_CHECKLIST.md** to verify:
 
@@ -209,7 +209,7 @@ plot_correlation_matrix(df_clean, save_path="reports/figures/corr.png")
 
 ---
 
-## 🎓 Key Concepts to Understand
+##  Key Concepts to Understand
 
 Before diving in, make sure you're comfortable with:
 
@@ -228,15 +228,15 @@ Before diving in, make sure you're comfortable with:
 
 ---
 
-## 🚀 You've Got This!
+##  You've Got This!
 
 This is a **sizable project**, but it's **100% doable** in 15–18 hours. The BUILD_GUIDE walks you through every step. The code templates get you started fast. And the checklist ensures nothing is missed.
 
-**Start with Step 1 (GitHub repo), then follow the workflow above. Good luck! 🎉**
+**Start with Step 1 (GitHub repo), then follow the workflow above. Good luck! **
 
 ---
 
-## 📧 Questions?
+##  Questions?
 
 - Check BUILD_GUIDE.md for detailed explanations
 - Review SUBMISSION_CHECKLIST.md for requirements
@@ -247,4 +247,4 @@ This is a **sizable project**, but it's **100% doable** in 15–18 hours. The BU
 
 **Build date:** May 15, 2026  
 **For:** PM Accelerator AI Engineer Internship Assessment  
-**Status:** Ready to implement ✅
+**Status:** Ready to implement 

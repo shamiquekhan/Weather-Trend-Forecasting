@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🌦️ PM Accelerator Weather Trend Forecasting - Master Execution Script
+ PM Accelerator Weather Trend Forecasting - Master Execution Script
 =======================================================================
 Complete implementation of all 6 notebooks:
 01. Data Cleaning & Preprocessing
@@ -69,7 +69,16 @@ except ImportError:
     FOLIUM_AVAILABLE = False
 
 # ====== CONFIGURATION ======
-DATA_PATH = Path("C:\\Users\\shami\\.cache\\kagglehub\\datasets\\nelgiriyewithana\\global-weather-repository\\versions\\955\\GlobalWeatherRepository.csv")
+RAW_KAGGLE_PATH = Path("C:/Users/shami/.cache/kagglehub/datasets/nelgiriyewithana/global-weather-repository/versions/955/GlobalWeatherRepository.csv")
+# Prefer raw Kaggle CSV if present, else fallback to cleaned dataset
+if RAW_KAGGLE_PATH.exists():
+    DATA_PATH = RAW_KAGGLE_PATH
+else:
+    fallback = Path("data/weather_cleaned.csv")
+    if fallback.exists():
+        DATA_PATH = fallback
+    else:
+        DATA_PATH = RAW_KAGGLE_PATH
 OUTPUT_DIR = Path("reports/figures")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -77,7 +86,7 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 def log_section(section_name: str):
     """Print formatted section header"""
     print(f"\n{'='*70}")
-    print(f"🔧 {section_name}")
+    print(f" {section_name}")
     print(f"{'='*70}\n")
 
 # ====== NOTEBOOK 01: DATA CLEANING & PREPROCESSING ======
@@ -85,18 +94,18 @@ def run_notebook_01():
     """Load, clean, and preprocess weather data"""
     log_section("NOTEBOOK 01: DATA CLEANING & PREPROCESSING")
     
-    print(f"📍 Loading data from: {DATA_PATH}")
+    print(f" Loading data from: {DATA_PATH}")
     df = pd.read_csv(DATA_PATH, parse_dates=["last_updated"])
-    print(f"✅ Initial shape: {df.shape}")
-    print(f"📊 Date range: {df['last_updated'].min()} → {df['last_updated'].max()}")
-    print(f"🌍 Unique countries: {df['country'].nunique()}, Unique cities: {df['location_name'].nunique()}")
+    print(f" Initial shape: {df.shape}")
+    print(f" Date range: {df['last_updated'].min()} → {df['last_updated'].max()}")
+    print(f" Unique countries: {df['country'].nunique()}, Unique cities: {df['location_name'].nunique()}")
     
     df_clean = clean_weather_data(df)
     
     # Save cleaned data
     output_file = "data/weather_cleaned.csv"
     df_clean.to_csv(output_file, index=False)
-    print(f"\n✅ Cleaned data saved to: {output_file}")
+    print(f"\n Cleaned data saved to: {output_file}")
     print(f"   Shape: {df_clean.shape}")
     print(f"   Missing values: {df_clean.isnull().sum().sum()}")
     
@@ -107,17 +116,17 @@ def clean_weather_data(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
     
     # 1. Parse Dates
-    print("\n1️⃣  Parsing dates...")
+    print("\n1⃣  Parsing dates...")
     df["last_updated"] = pd.to_datetime(df["last_updated"], errors="coerce")
     initial = df.shape[0]
     df = df.dropna(subset=["last_updated"])
     dropped = initial - df.shape[0]
     if dropped > 0:
-        print(f"   ⚠️  Dropped {dropped} rows with unparseable dates")
+        print(f"     Dropped {dropped} rows with unparseable dates")
     df = df.sort_values("last_updated").reset_index(drop=True)
     
     # 2. Extract Time Features
-    print("2️⃣  Extracting temporal features...")
+    print("2⃣  Extracting temporal features...")
     df["year"] = df["last_updated"].dt.year
     df["month"] = df["last_updated"].dt.month
     df["day"] = df["last_updated"].dt.day
@@ -132,7 +141,7 @@ def clean_weather_data(df: pd.DataFrame) -> pd.DataFrame:
     })
     
     # 3. Handle Missing Values
-    print("3️⃣  Handling missing values...")
+    print("3⃣  Handling missing values...")
     numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
     categorical_cols = df.select_dtypes(include=["object"]).columns.tolist()
     
@@ -145,10 +154,10 @@ def clean_weather_data(df: pd.DataFrame) -> pd.DataFrame:
     for col in categorical_cols:
         if df[col].isnull().any():
             df[col] = df[col].fillna(df[col].mode()[0])
-    print(f"   ✅ Remaining nulls: {df.isnull().sum().sum()}")
+    print(f"    Remaining nulls: {df.isnull().sum().sum()}")
     
     # 4. Outlier Handling
-    print("4️⃣  Clipping outliers...")
+    print("4⃣  Clipping outliers...")
     key_cols = ["temperature_celsius", "precip_mm", "wind_kph", "humidity"]
     for col in key_cols:
         if col in df.columns:
@@ -163,7 +172,7 @@ def clean_weather_data(df: pd.DataFrame) -> pd.DataFrame:
             df[col] = df[col].clip(lower, upper)
     
     # 5. Feature Engineering
-    print("5️⃣  Engineering derived features...")
+    print("5⃣  Engineering derived features...")
     if "temperature_celsius" in df.columns and "humidity" in df.columns:
         df["temp_humidity_index"] = df["temperature_celsius"] * df["humidity"] / 100
         df["heat_index"] = df["temperature_celsius"] + 0.33 * (df["humidity"] / 100 * 6.105) - 4
@@ -173,7 +182,7 @@ def clean_weather_data(df: pd.DataFrame) -> pd.DataFrame:
         df["log_precip"] = np.log1p(df["precip_mm"])
     
     # 6. Normalize Features
-    print("6️⃣  Normalizing numeric features...")
+    print("6⃣  Normalizing numeric features...")
     scaler = MinMaxScaler()
     scale_cols = ["temperature_celsius", "humidity", "wind_kph", "precip_mm",
                   "pressure_mb", "visibility_km", "uv_index"]
@@ -181,7 +190,7 @@ def clean_weather_data(df: pd.DataFrame) -> pd.DataFrame:
     if scale_cols:
         df[[f"{c}_scaled" for c in scale_cols]] = scaler.fit_transform(df[scale_cols])
     
-    print(f"   ✅ Final shape: {df.shape}")
+    print(f"    Final shape: {df.shape}")
     return df
 
 # ====== NOTEBOOK 02: BASIC EDA ======
@@ -190,7 +199,7 @@ def run_notebook_02(df_clean):
     log_section("NOTEBOOK 02: BASIC EDA")
     
     # Temperature Trends
-    print("📈 Plotting global temperature trends...")
+    print(" Plotting global temperature trends...")
     daily_avg = df_clean.groupby("last_updated")["temperature_celsius"].mean().reset_index()
     fig = px.line(daily_avg, x="last_updated", y="temperature_celsius",
                   title="Global Average Daily Temperature Over Time",
@@ -198,7 +207,7 @@ def run_notebook_02(df_clean):
     fig.write_html(OUTPUT_DIR / "01_global_temp_trend.html")
     
     # Monthly Boxplot
-    print("📊 Creating monthly temperature distribution...")
+    print(" Creating monthly temperature distribution...")
     fig, ax = plt.subplots(figsize=(14, 6))
     sns.boxplot(data=df_clean, x="month", y="temperature_celsius", palette="coolwarm", ax=ax)
     ax.set_title("Monthly Temperature Distribution (Global)", fontsize=14, fontweight="bold")
@@ -207,7 +216,7 @@ def run_notebook_02(df_clean):
     plt.close()
     
     # Correlation Matrix
-    print("🔗 Computing feature correlations...")
+    print(" Computing feature correlations...")
     numeric_features = ["temperature_celsius", "humidity", "wind_kph", "precip_mm",
                        "pressure_mb", "visibility_km", "uv_index"]
     numeric_features = [c for c in numeric_features if c in df_clean.columns]
@@ -220,14 +229,14 @@ def run_notebook_02(df_clean):
     plt.savefig(OUTPUT_DIR / "04_correlation_matrix.png", dpi=150)
     plt.close()
     
-    print("✅ Notebook 02 Complete!")
+    print(" Notebook 02 Complete!")
 
 # ====== NOTEBOOK 03: ANOMALY DETECTION ======
 def run_notebook_03(df_clean):
     """Advanced EDA with anomaly detection"""
     log_section("NOTEBOOK 03: ADVANCED EDA & ANOMALY DETECTION")
     
-    print("🔍 Performing anomaly detection...")
+    print(" Performing anomaly detection...")
     features_for_anomaly = ["temperature_celsius", "humidity", "wind_kph", "precip_mm", "pressure_mb"]
     X = df_clean[features_for_anomaly].dropna()
     
@@ -256,11 +265,11 @@ def run_notebook_03(df_clean):
                      template="plotly_dark")
     fig.write_html(OUTPUT_DIR / "03_anomaly_detection.html")
     
-    print(f"✅ Anomalies detected: {anomalies.shape[0]} ({anomalies.shape[0]/df_clean.shape[0]*100:.1f}%)")
+    print(f" Anomalies detected: {anomalies.shape[0]} ({anomalies.shape[0]/df_clean.shape[0]*100:.1f}%)")
     
     # Save
     df_clean.to_csv("data/weather_with_anomalies.csv", index=False)
-    print("✅ Notebook 03 Complete!")
+    print(" Notebook 03 Complete!")
     
     return df_clean
 
@@ -270,7 +279,7 @@ def run_notebook_04(df_clean):
     log_section("NOTEBOOK 04: ARIMA FORECASTING")
     
     city = "London"
-    print(f"🏙️  Forecasting for: {city}")
+    print(f"  Forecasting for: {city}")
     
     city_df = (
         df_clean[df_clean["location_name"] == city]
@@ -280,7 +289,7 @@ def run_notebook_04(df_clean):
     )
     
     if len(city_df) < 100:
-        print(f"⚠️  Not enough data for {city}. Skipping ARIMA.")
+        print(f"  Not enough data for {city}. Skipping ARIMA.")
         return None
     
     # Train/Test Split
@@ -295,7 +304,7 @@ def run_notebook_04(df_clean):
                                   max_p=5, max_q=5)
         forecast, _ = auto_model.predict(n_periods=len(test), return_conf_int=True)
     except:
-        print("⚠️  Auto-ARIMA failed. Using simple exponential smoothing.")
+        print("  Auto-ARIMA failed. Using simple exponential smoothing.")
         from statsmodels.tsa.holtwinters import ExponentialSmoothing
         model = ExponentialSmoothing(train, trend="add", seasonal="add", seasonal_periods=30)
         fitted = model.fit()
@@ -305,7 +314,7 @@ def run_notebook_04(df_clean):
     mae = mean_absolute_error(test, forecast)
     rmse = np.sqrt(mean_squared_error(test, forecast))
     
-    print(f"📊 ARIMA Results for {city}:")
+    print(f" ARIMA Results for {city}:")
     print(f"   MAE: {mae:.3f} °C")
     print(f"   RMSE: {rmse:.3f} °C")
     
@@ -318,7 +327,7 @@ def run_notebook_04(df_clean):
     fig.update_layout(title=f"ARIMA Forecast - {city}", template="plotly_dark")
     fig.write_html(OUTPUT_DIR / f"04_arima_forecast_{city.lower()}.html")
     
-    print("✅ Notebook 04 Complete!")
+    print(" Notebook 04 Complete!")
     return {"city": city, "mae": mae, "rmse": rmse}
 
 # ====== NOTEBOOK 05: ADVANCED MODELS ======
@@ -327,7 +336,7 @@ def run_notebook_05(df_clean):
     log_section("NOTEBOOK 05: ADVANCED MODELS")
     
     city = "London"
-    print(f"🏙️  Multi-model forecasting for: {city}")
+    print(f"  Multi-model forecasting for: {city}")
     
     city_df = (
         df_clean[df_clean["location_name"] == city]
@@ -339,7 +348,7 @@ def run_notebook_05(df_clean):
     results = {"city": city}
     
     # XGBoost with Lag Features
-    print("🚀 Training XGBoost...")
+    print(" Training XGBoost...")
     def create_lag_features(series, lags=[1,2,3,7,14,30]):
         df_lag = pd.DataFrame({"y": series})
         for lag in lags:
@@ -373,7 +382,7 @@ def run_notebook_05(df_clean):
     results_df = pd.DataFrame([results])
     results_df.to_csv("reports/advanced_model_results.csv", index=False)
     
-    print("✅ Notebook 05 Complete!")
+    print(" Notebook 05 Complete!")
     return results
 
 # ====== NOTEBOOK 06: UNIQUE ANALYSES ======
@@ -381,25 +390,25 @@ def run_notebook_06(df_clean):
     """Climate, Environmental, SHAP, Spatial, Geographical analyses"""
     log_section("NOTEBOOK 06: UNIQUE ANALYSES")
     
-    print("🌍 Performing unique advanced analyses...")
+    print(" Performing unique advanced analyses...")
     
     # 1. Climate Analysis
-    print("1️⃣  Climate pattern analysis...")
+    print("1⃣  Climate pattern analysis...")
     annual_avg = df_clean.groupby(df_clean["last_updated"].dt.year)["temperature_celsius"].mean()
     print(f"   Annual temp range: {annual_avg.min():.2f}°C - {annual_avg.max():.2f}°C")
     
     # 2. Top Cities by Temperature
-    print("2️⃣  Analyzing geographic patterns...")
+    print("2⃣  Analyzing geographic patterns...")
     city_temps = df_clean.groupby("location_name")["temperature_celsius"].mean().nlargest(10)
     print(f"   Hottest city: {city_temps.index[0]} ({city_temps.values[0]:.2f}°C)")
     
     # 3. Precipitation Analysis
-    print("3️⃣  Analyzing precipitation patterns...")
+    print("3⃣  Analyzing precipitation patterns...")
     top_rain = df_clean.groupby("location_name")["precip_mm"].mean().nlargest(5)
     print(f"   Wettest city: {top_rain.index[0]} ({top_rain.values[0]:.1f}mm)")
     
     # 4. Create simple spatial heatmap
-    print("4️⃣  Creating spatial heatmap...")
+    print("4⃣  Creating spatial heatmap...")
     city_summary = df_clean.groupby(["location_name", "latitude", "longitude"])["temperature_celsius"].mean().reset_index()
     city_summary = city_summary.dropna()
     
@@ -410,31 +419,31 @@ def run_notebook_06(df_clean):
         HeatMap(heat_data, radius=15, blur=10, min_opacity=0.3).add_to(m)
         m.save(str(OUTPUT_DIR / "06_spatial_heatmap.html"))
     else:
-        print("   ⚠️  Folium not available - skipping spatial heatmap")
+        print("     Folium not available - skipping spatial heatmap")
     
     # 5. Choropleth
-    print("5️⃣  Creating country-level choropleth...")
+    print("5⃣  Creating country-level choropleth...")
     country_avg = df_clean.groupby("country")["temperature_celsius"].mean().reset_index()
     fig = px.choropleth(country_avg, locations="country", locationmode="country names",
                        color="temperature_celsius", color_continuous_scale="RdYlBu_r",
                        title="Average Temperature by Country", template="plotly_dark")
     fig.write_html(OUTPUT_DIR / "06_choropleth_temp.html")
     
-    print("✅ Notebook 06 Complete!")
+    print(" Notebook 06 Complete!")
 
 # ====== MAIN EXECUTION ======
 def main():
     """Execute all notebooks sequentially"""
     print("\n" + "="*70)
-    print("🌦️  PM ACCELERATOR WEATHER TREND FORECASTING")
+    print("  PM ACCELERATOR WEATHER TREND FORECASTING")
     print("="*70)
-    print("📝 Complete Advanced Assessment - All Notebooks\n")
+    print(" Complete Advanced Assessment - All Notebooks\n")
     
     try:
         # Verify Kaggle data exists
         if not DATA_PATH.exists():
-            print(f"❌ ERROR: Dataset not found at {DATA_PATH}")
-            print("📥 Please download from: https://www.kaggle.com/datasets/nelgiriyewithana/global-weather-repository")
+            print(f" ERROR: Dataset not found at {DATA_PATH}")
+            print(" Please download from: https://www.kaggle.com/datasets/nelgiriyewithana/global-weather-repository")
             sys.exit(1)
         
         # Run all notebooks
@@ -446,21 +455,21 @@ def main():
         run_notebook_06(df_clean)
         
         print("\n" + "="*70)
-        print("🎉 ALL NOTEBOOKS COMPLETED SUCCESSFULLY!")
+        print(" ALL NOTEBOOKS COMPLETED SUCCESSFULLY!")
         print("="*70)
-        print("\n📊 Outputs saved to:")
-        print("   ✓ data/weather_cleaned.csv (141.5K records)")
-        print("   ✓ data/weather_with_anomalies.csv (with anomaly flags)")
-        print("   ✓ reports/figures/ (all visualizations)")
-        print("   ✓ reports/advanced_model_results.csv (model metrics)")
-        print("\n📚 Next steps:")
+        print("\n Outputs saved to:")
+        print("    data/weather_cleaned.csv (141.5K records)")
+        print("    data/weather_with_anomalies.csv (with anomaly flags)")
+        print("    reports/figures/ (all visualizations)")
+        print("    reports/advanced_model_results.csv (model metrics)")
+        print("\n Next steps:")
         print("   1. View interactive dashboards in reports/figures/")
         print("   2. Run: python dashboard.py (for Dash dashboard)")
         print("   3. Check README_COMPLETE.md for full documentation")
         print("   4. Review reports for insights and findings")
         
     except Exception as e:
-        print(f"\n❌ ERROR: {e}")
+        print(f"\n ERROR: {e}")
         import traceback
         traceback.print_exc()
         sys.exit(1)

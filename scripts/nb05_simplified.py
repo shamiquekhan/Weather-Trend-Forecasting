@@ -14,7 +14,7 @@ print("="*60)
 
 try:
     # Load data
-    print("\n✅ Loading dataset...")
+    print("\n Loading dataset...")
     df = pd.read_csv("data/weather_cleaned.csv", parse_dates=["last_updated"])
     
     city = "London"
@@ -28,7 +28,7 @@ try:
     test_ts = city_ts.iloc[train_size:]
     
     # Prophet
-    print(f"\n✅ Prophet Model")
+    print(f"\n Prophet Model")
     prophet_df = city_ts.reset_index().rename(columns={"last_updated": "ds", "temperature_celsius": "y"})
     train_prophet = prophet_df.iloc[:train_size]
     
@@ -50,7 +50,7 @@ try:
     print(f"   MAE: {mae_p:.3f}°C, RMSE: {rmse_p:.3f}°C, R²: {r2_p:.3f}")
     
     # XGBoost with lags
-    print(f"\n✅ XGBoost Model")
+    print(f"\n XGBoost Model")
     lag_df = pd.DataFrame({"y": city_ts})
     for lag in [1, 2, 3, 7, 14, 30]:
         lag_df[f"lag_{lag}"] = city_ts.shift(lag)
@@ -75,7 +75,7 @@ try:
     print(f"   MAE: {mae_xgb:.3f}°C, RMSE: {rmse_xgb:.3f}°C, R²: {r2_xgb:.3f}")
     
     # Ensemble
-    print(f"\n✅ Ensemble (Prophet + XGBoost)")
+    print(f"\n Ensemble (Prophet + XGBoost)")
     ensemble_preds = 0.35 * pred_prophet[:len(y_test)] + 0.65 * pred_xgb
     mae_ens = mean_absolute_error(y_test, ensemble_preds)
     rmse_ens = np.sqrt(mean_squared_error(y_test, ensemble_preds))
@@ -91,12 +91,12 @@ try:
     })
     results.to_csv("reports/advanced_model_results.csv", index=False)
     
-    print(f"\n🏆 Best Model: {results.loc[results['MAE'].idxmin(), 'Model']}")
-    print(f"✅ Results saved to reports/advanced_model_results.csv")
+    print(f"\n Best Model: {results.loc[results['MAE'].idxmin(), 'Model']}")
+    print(f" Results saved to reports/advanced_model_results.csv")
     
-    print(f"\n🎉 Notebook 05 Complete!")
+    print(f"\n Notebook 05 Complete!")
     
 except Exception as e:
-    print(f"❌ ERROR: {str(e)}")
+    print(f" ERROR: {str(e)}")
     import traceback
     traceback.print_exc()

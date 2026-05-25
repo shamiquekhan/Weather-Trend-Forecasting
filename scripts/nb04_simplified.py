@@ -14,7 +14,7 @@ print("="*60)
 
 try:
     # Load data
-    print("\n✅ Loading dataset...")
+    print("\n Loading dataset...")
     df = pd.read_csv("data/weather_cleaned.csv", parse_dates=["last_updated"])
     
     # Select city
@@ -23,11 +23,11 @@ try:
     city_ts = (city_data.set_index("last_updated")["temperature_celsius"]
                .resample("D").mean().interpolate())
     
-    print(f"\n✅ City selected: {city}")
+    print(f"\n City selected: {city}")
     print(f"   Length: {len(city_ts):,} days")
     
     # Stationarity test
-    print(f"\n✅ Augmented Dickey-Fuller Test:")
+    print(f"\n Augmented Dickey-Fuller Test:")
     result = adfuller(city_ts.dropna())
     print(f"   Test Statistic: {result[0]:.6f}")
     print(f"   p-value: {result[1]:.6f}")
@@ -41,12 +41,12 @@ try:
     train_ts = city_ts.iloc[:train_size]
     test_ts = city_ts.iloc[train_size:]
     
-    print(f"\n✅ Train/Test Split:")
+    print(f"\n Train/Test Split:")
     print(f"   Train: {len(train_ts):,} ({len(train_ts)/len(city_ts)*100:.1f}%)")
     print(f"   Test: {len(test_ts):,} ({len(test_ts)/len(city_ts)*100:.1f}%)")
     
     # Auto-ARIMA
-    print(f"\n✅ Fitting Auto-ARIMA...")
+    print(f"\n Fitting Auto-ARIMA...")
     auto_model = pm.auto_arima(train_ts, seasonal=True, m=12, stepwise=True,
                                suppress_warnings=True, error_action="ignore",
                                max_p=5, max_q=5, max_P=2, max_Q=2, trace=False)
@@ -59,7 +59,7 @@ try:
     r2 = r2_score(test_ts, forecast_vals)
     mape = np.mean(np.abs((test_ts - forecast_vals) / test_ts)) * 100
     
-    print(f"\n✅ ARIMA Evaluation Metrics:")
+    print(f"\n ARIMA Evaluation Metrics:")
     print(f"   MAE: {mae:.3f}°C")
     print(f"   RMSE: {rmse:.3f}°C")
     print(f"   R²: {r2:.3f}")
@@ -76,11 +76,11 @@ try:
     })
     results.to_csv("reports/model_results.csv", index=False)
     
-    print(f"\n✅ Results saved to reports/model_results.csv")
+    print(f"\n Results saved to reports/model_results.csv")
     
-    print(f"\n🎉 Notebook 04 Complete!")
+    print(f"\n Notebook 04 Complete!")
     
 except Exception as e:
-    print(f"❌ ERROR: {str(e)}")
+    print(f" ERROR: {str(e)}")
     import traceback
     traceback.print_exc()

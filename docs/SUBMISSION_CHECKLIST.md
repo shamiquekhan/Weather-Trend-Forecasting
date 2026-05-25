@@ -1,4 +1,4 @@
-# 📋 PM Accelerator Submission Checklist
+#  PM Accelerator Submission Checklist
 
 ## Pre-Submission Verification
 
@@ -6,7 +6,7 @@ Use this checklist to ensure your project meets all assessment requirements befo
 
 ---
 
-## ✅ Repository Setup
+##  Repository Setup
 
 - [x] GitHub repository is **created and public** (or private with correct collaborator access)
 - [x] Repository URL is ready for submission
@@ -19,7 +19,7 @@ Use this checklist to ensure your project meets all assessment requirements befo
 
 ---
 
-## ✅ Repository Contents
+##  Repository Contents
 
 ### Root Level Files
 - [x] `README.md` exists and is comprehensive (see README template below)
@@ -36,7 +36,7 @@ Use this checklist to ensure your project meets all assessment requirements befo
 
 ---
 
-## ✅ Notebooks Checklist
+##  Notebooks Checklist
 
 Each notebook should:
 - [x] Have a clear title in the first markdown cell
@@ -91,7 +91,7 @@ Each notebook should:
 
 ---
 
-## ✅ Code Quality
+##  Code Quality
 
 - [x] All functions have **docstrings** (at minimum: 1-line description + Args/Returns)
 - [x] **Type hints** are used in function signatures (e.g., `def load_data(path: str) -> pd.DataFrame`)
@@ -107,7 +107,7 @@ Each notebook should:
 
 ---
 
-## ✅ Visualizations & Deliverables
+##  Visualizations & Deliverables
 
 ### Key Visualizations (Must Haves)
 - [x] **Temperature Trend** (global or city-level, over time)
@@ -130,7 +130,7 @@ Each notebook should:
 
 ---
 
-## ✅ PM Accelerator Branding
+##  PM Accelerator Branding
 
 - [x] PM Accelerator **mission statement** is included in your README
 - [x] Mission statement is displayed in your **dashboard header** or **HTML report**
@@ -141,7 +141,7 @@ Each notebook should:
 
 ---
 
-## ✅ Model Evaluation
+##  Model Evaluation
 
 Each forecasting model should report:
 - [x] **MAE** (Mean Absolute Error) in °C
@@ -157,7 +157,7 @@ Each forecasting model should report:
 
 ---
 
-## ✅ Demo Video
+##  Demo Video
 
 - [x] **Duration:** 2 minutes maximum
 - [x] **Content:**
@@ -177,7 +177,7 @@ Each forecasting model should report:
 
 ---
 
-## ✅ Dataset
+##  Dataset
 
 - [x] Dataset **downloaded** from Kaggle (Global Weather Repository)
 - [x] Download instructions documented in `data/README.md`
@@ -190,10 +190,10 @@ Each forecasting model should report:
 
 ---
 
-## ✅ Documentation
+##  Documentation
 
 ### README.md Must Include
-- [x] **Project Title** (🌦️ Weather Trend Forecasting)
+- [x] **Project Title** ( Weather Trend Forecasting)
 - [x] **Overview** (2–3 sentence description)
 - [x] **PM Accelerator Mission** statement
 - [x] **Tech Stack** (languages, libraries, frameworks)
@@ -212,7 +212,7 @@ Each forecasting model should report:
 
 ---
 
-## ✅ Environment & Dependencies
+##  Environment & Dependencies
 
 - [x] `requirements.txt` lists ALL Python packages with versions
 - [x] Tested: `pip install -r requirements.txt` works without errors
@@ -227,7 +227,7 @@ Each forecasting model should report:
 
 ---
 
-## ✅ Pre-Submission Testing
+##  Pre-Submission Testing
 
 Run these checks **72 hours before submission deadline:**
 
@@ -258,7 +258,7 @@ ls reports/figures/
 
 ---
 
-## ✅ Final Submission
+##  Final Submission
 
 ### Before Clicking Submit:
 
@@ -280,18 +280,18 @@ ls reports/figures/
 
 ---
 
-## 🎯 Success Indicators
+##  Success Indicators
 
 After submission, you should have:
 
-✅ **Basic Track Coverage** (minimum):
+ **Basic Track Coverage** (minimum):
 - Solid data pipeline (cleaning + preprocessing)
 - At least 1 time-series model (ARIMA)
 - Clear visualizations (temperature, precipitation, correlation)
 - Working GitHub repo with README
 - Demo video
 
-✅ **Advanced Track Coverage** (differentiator):
+ **Advanced Track Coverage** (differentiator):
 - All of above PLUS:
 - Multiple models (3+) with ensemble stacking
 - SHAP feature importance analysis
@@ -302,7 +302,7 @@ After submission, you should have:
 
 ---
 
-## 📧 Contact & Support
+##  Contact & Support
 
 If you have questions before submission:
 - Email: [PM Accelerator contact email]
@@ -311,14 +311,14 @@ If you have questions before submission:
 
 ---
 
-## 🚀 Post-Submission
+##  Post-Submission
 
 - [x] Save this checklist for your records
 - [x] Screenshot key metrics for your portfolio
 - [x] Add project link to LinkedIn
 - [x] Prepare talking points for potential interviews
 
-**Good luck! 🎉**
+**Good luck! **
 
 ---
 

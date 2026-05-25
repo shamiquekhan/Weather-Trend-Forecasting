@@ -1,4 +1,4 @@
-# 🎬 2-Minute Demo Video Script & Recording Guide
+#  2-Minute Demo Video Script & Recording Guide
 
 ## Script Outline (Exactly 2 Minutes)
 
@@ -15,7 +15,7 @@ Use this script to guide your screen-share demo. **Bold times** are hard checkpo
 - Your face (quick, professional greeting)
 - Briefly show your desktop/environment
 
-**Checkpoint: 0:15** ⏱️
+**Checkpoint: 0:15** ⏱
 
 ---
 
@@ -28,17 +28,17 @@ Use this script to guide your screen-share demo. **Bold times** are hard checkpo
 - **Open GitHub repo** (in browser or terminal)
 - **Scroll through folder structure:**
   ```
-  ✅ data/ (with README)
-  ✅ notebooks/ (01_cleaning, 02_eda_basic, ..., 06_unique_analyses)
-  ✅ src/ (data_loader.py, eda_utils.py, models.py)
-  ✅ reports/figures/ (generated plots)
-  ✅ README.md (scroll down briefly to show mission statement + setup)
-  ✅ requirements.txt
-  ✅ dashboard.py
+   data/ (with README)
+   notebooks/ (01_cleaning, 02_eda_basic, ..., 06_unique_analyses)
+   src/ (data_loader.py, eda_utils.py, models.py)
+   reports/figures/ (generated plots)
+   README.md (scroll down briefly to show mission statement + setup)
+   requirements.txt
+   dashboard.py
   ```
 - **Do NOT** spend time reading line-by-line
 
-**Checkpoint: 0:40** ⏱️
+**Checkpoint: 0:40** ⏱
 
 ---
 
@@ -70,7 +70,7 @@ Use this script to guide your screen-share demo. **Bold times** are hard checkpo
 
 **Keep transitions smooth — use Alt+Tab or browser tabs pre-opened**
 
-**Checkpoint: 1:10** ⏱️
+**Checkpoint: 1:10** ⏱
 
 ---
 
@@ -97,7 +97,7 @@ Use this script to guide your screen-share demo. **Bold times** are hard checkpo
    - Show confidence intervals
    - 5 seconds
 
-**Checkpoint: 1:40** ⏱️
+**Checkpoint: 1:40** ⏱
 
 ---
 
@@ -121,11 +121,11 @@ Use this script to guide your screen-share demo. **Bold times** are hard checkpo
 4. **Brief closing screen** (your name + thank you)
    - 5 seconds
 
-**Checkpoint: 2:00** ⏱️
+**Checkpoint: 2:00** ⏱
 
 ---
 
-## 🎥 Recording Setup
+##  Recording Setup
 
 ### Option 1: Loom (Recommended for Ease)
 1. Go to [loom.com](https://loom.com)
@@ -160,7 +160,7 @@ Use this script to guide your screen-share demo. **Bold times** are hard checkpo
 
 ---
 
-## ✅ Pre-Recording Checklist
+##  Pre-Recording Checklist
 
 - [ ] Close all unnecessary browser tabs (only keep GitHub, visualizations, code)
 - [ ] Disable notifications (macOS: Focus Mode, Windows: Focus Assist)
@@ -169,20 +169,20 @@ Use this script to guide your screen-share demo. **Bold times** are hard checkpo
 - [ ] Print this script and place next to monitor
 - [ ] Have all visualizations/notebooks open in separate tabs before recording
 - [ ] Cursor speed set to normal (not too fast)
-- [ ] Fresh cup of water nearby 💧
+- [ ] Fresh cup of water nearby 
 
 ---
 
-## 🎤 Narration Tips
+##  Narration Tips
 
-✅ **DO:**
+ **DO:**
 - Speak clearly and at a natural pace (not rushed)
 - Use the script as a **guide**, not a word-for-word mandate
 - Show enthusiasm about the project
 - Point out interesting findings ("Notice the red anomalies here...")
 - Pause briefly when transitioning between visuals
 
-❌ **DON'T:**
+ **DON'T:**
 - Read the script robotically
 - Go over 2 minutes (hard cutoff)
 - Show/discuss sensitive info (personal credentials, keys)
@@ -191,7 +191,7 @@ Use this script to guide your screen-share demo. **Bold times** are hard checkpo
 
 ---
 
-## 📹 Editing (Optional)
+##  Editing (Optional)
 
 If using OBS/Google Meet, you can edit in:
 - **DaVinci Resolve** (free video editor)
@@ -205,7 +205,7 @@ Basic edits:
 
 ---
 
-## 📤 Sharing the Link
+##  Sharing the Link
 
 After recording:
 
@@ -227,11 +227,11 @@ After recording:
 
 ---
 
-## 📋 Demo Link Format
+##  Demo Link Format
 
 Create `demo/demo_link.txt` with:
 ```
-🎬 DEMO VIDEO LINK
+ DEMO VIDEO LINK
 ==================
 
 Title: Weather Trend Forecasting — PM Accelerator Assessment
@@ -245,7 +245,7 @@ Access: Public | Anyone with link can view
 
 ---
 
-## 🎯 Checklist: Post-Recording
+##  Checklist: Post-Recording
 
 - [ ] Video is at least 1:30 and at most 2:00
 - [ ] Audio is clear (test by listening once)
@@ -257,7 +257,7 @@ Access: Public | Anyone with link can view
 
 ---
 
-## 🚀 Going Live
+##  Going Live
 
 **48 hours before submission deadline:**
 - [ ] Record final demo video
@@ -266,7 +266,7 @@ Access: Public | Anyone with link can view
 - [ ] Commit to GitHub
 - [ ] Do a final repo review
 
-**You're ready! 🎉**
+**You're ready! **
 
 ---
 

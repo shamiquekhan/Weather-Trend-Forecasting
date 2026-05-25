@@ -38,20 +38,34 @@ def load_data(path: str = "data/GlobalWeatherRepository.csv") -> pd.DataFrame:
         FileNotFoundError: If the file does not exist
         ValueError: If the CSV is malformed
     """
-    try:
-        logger.info(f"Loading data from {path}")
-        df = pd.read_csv(path, parse_dates=["last_updated"])
-        logger.info(f"✅ Loaded {df.shape[0]} rows, {df.shape[1]} columns")
-        logger.info(f"   Date range: {df['last_updated'].min()} → {df['last_updated'].max()}")
-        logger.info(f"   Unique countries: {df['country'].nunique()}")
-        logger.info(f"   Unique cities: {df['location_name'].nunique()}")
-        return df
-    except FileNotFoundError:
-        logger.error(f"File not found: {path}")
-        raise
-    except Exception as e:
-        logger.error(f"Error loading data: {e}")
-        raise
+    # Try the provided path first, then fall back to commonly available candidates
+    candidates = [path,
+                  "data/weather_cleaned.csv",
+                  "data/GlobalWeatherRepository.csv",
+                  "../data/weather_cleaned.csv",
+                  "notebooks/../data/weather_cleaned.csv"]
+    last_exc = None
+    for p in candidates:
+        try:
+            logger.info(f"Loading data from {p}")
+            df = pd.read_csv(p, parse_dates=["last_updated"])
+            logger.info(f" Loaded {df.shape[0]} rows, {df.shape[1]} columns")
+            logger.info(f"   Date range: {df['last_updated'].min()} → {df['last_updated'].max()}")
+            logger.info(f"   Unique countries: {df['country'].nunique()}")
+            logger.info(f"   Unique cities: {df['location_name'].nunique()}")
+            return df
+        except FileNotFoundError as e:
+            logger.debug(f"Not found: {p}")
+            last_exc = e
+            continue
+        except Exception as e:
+            logger.error(f"Error loading data from {p}: {e}")
+            raise
+    # If none of the candidates worked, raise the last FileNotFoundError
+    logger.error(f"None of the candidate data files were found. Checked: {candidates}")
+    if last_exc:
+        raise last_exc
+    raise FileNotFoundError(path)
 
 
 def clean_weather_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -84,7 +98,7 @@ def clean_weather_data(df: pd.DataFrame) -> pd.DataFrame:
         logger.warning(f"   Dropped {dropped} rows with unparseable dates")
     
     df = df.sort_values("last_updated").reset_index(drop=True)
-    logger.info(f"✅ Date range: {df['last_updated'].min()} → {df['last_updated'].max()}")
+    logger.info(f" Date range: {df['last_updated'].min()} → {df['last_updated'].max()}")
     
     # ── 2. Extract Time Features ──────────────────────────────────────────────
     logger.info("Step 2: Extracting temporal features...")
@@ -100,7 +114,7 @@ def clean_weather_data(df: pd.DataFrame) -> pd.DataFrame:
         6: "Summer",  7: "Summer", 8: "Summer",
         9: "Autumn", 10: "Autumn", 11: "Autumn"
     })
-    logger.info("✅ Temporal features extracted")
+    logger.info(" Temporal features extracted")
     
     # ── 3. Handle Missing Values ──────────────────────────────────────────────
     logger.info("Step 3: Handling missing values...")
@@ -121,7 +135,7 @@ def clean_weather_data(df: pd.DataFrame) -> pd.DataFrame:
         if df[col].isnull().any():
             df[col] = df[col].fillna(df[col].mode()[0])
     
-    logger.info(f"✅ Missing values handled (remaining: {df.isnull().sum().sum()})")
+    logger.info(f" Missing values handled (remaining: {df.isnull().sum().sum()})")
     
     # ── 4. Outlier Handling (IQR method) ──────────────────────────────────────
     logger.info("Step 4: Clipping outliers...")
@@ -154,7 +168,7 @@ def clean_weather_data(df: pd.DataFrame) -> pd.DataFrame:
     if "precip_mm" in df.columns:
         df["log_precip"] = np.log1p(df["precip_mm"])
     
-    logger.info("✅ Derived features created")
+    logger.info(" Derived features created")
     
     # ── 6. Normalize Numeric Features ─────────────────────────────────────────
     logger.info("Step 6: Normalizing numeric features...")
@@ -165,9 +179,9 @@ def clean_weather_data(df: pd.DataFrame) -> pd.DataFrame:
     
     if scale_cols:
         df[[f"{c}_scaled" for c in scale_cols]] = scaler.fit_transform(df[scale_cols])
-        logger.info(f"✅ Normalized {len(scale_cols)} features")
+        logger.info(f" Normalized {len(scale_cols)} features")
     
-    logger.info(f"\n✅ Cleaning complete!")
+    logger.info(f"\n Cleaning complete!")
     logger.info(f"   Final shape: {df.shape}")
     logger.info(f"   Remaining nulls: {df.isnull().sum().sum()}")
     
@@ -199,8 +213,10 @@ def get_city_timeseries(
 
 
 if __name__ == "__main__":
-    # Example usage
+    # Example usage (ensure data directory exists)
+    from pathlib import Path
+    Path("data").mkdir(parents=True, exist_ok=True)
     df = load_data("data/GlobalWeatherRepository.csv")
     df_clean = clean_weather_data(df)
     df_clean.to_csv("data/weather_cleaned.csv", index=False)
-    print("✅ Data processing complete. Saved to data/weather_cleaned.csv")
+    print(" Data processing complete. Saved to data/weather_cleaned.csv")

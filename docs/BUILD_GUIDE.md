@@ -1,11 +1,11 @@
-# 🌦️ Weather Trend Forecasting — Complete Build Guide
+#  Weather Trend Forecasting — Complete Build Guide
 ### PM Accelerator · AI Engineer Internship · Tech Assessment
 
 > **Mission of PM Accelerator:** Empower the next generation of AI professionals through hands-on experience, mentorship, and real-world projects — bridging the gap between academic learning and industry-ready skills.
 
 ---
 
-## 📋 Table of Contents
+##  Table of Contents
 
 1. [Project Overview & Strategy](#1-project-overview--strategy)
 2. [Repository Structure](#2-repository-structure)
@@ -296,7 +296,7 @@ def clean_weather_data(df: pd.DataFrame) -> pd.DataFrame:
     scale_cols = [c for c in scale_cols if c in df.columns]
     df[[f"{c}_scaled" for c in scale_cols]] = scaler.fit_transform(df[scale_cols])
 
-    print(f"\n✅ Cleaned dataset shape: {df.shape}")
+    print(f"\n Cleaned dataset shape: {df.shape}")
     print(f"   Remaining nulls: {df.isnull().sum().sum()}")
     return df
 
@@ -481,7 +481,7 @@ city_df = (
 result = adfuller(city_df.dropna())
 print(f"ADF Statistic: {result[0]:.4f}")
 print(f"p-value: {result[1]:.4f}")
-print("→ Series is", "stationary ✅" if result[1] < 0.05 else "non-stationary ⚠️")
+print("→ Series is", "stationary " if result[1] < 0.05 else "non-stationary ")
 
 # ── Auto-ARIMA ────────────────────────────────────────────────────────────────
 train_size = int(len(city_df) * 0.8)
@@ -506,7 +506,7 @@ rmse = np.sqrt(mean_squared_error(test, forecast))
 r2   = r2_score(test, forecast)
 mape = np.mean(np.abs((test - forecast) / test)) * 100
 
-print(f"\n📊 ARIMA Evaluation ({city}):")
+print(f"\n ARIMA Evaluation ({city}):")
 print(f"   MAE:  {mae:.3f} °C")
 print(f"   RMSE: {rmse:.3f} °C")
 print(f"   R²:   {r2:.3f}")
@@ -568,7 +568,7 @@ mae_p  = mean_absolute_error(test_p["y"], pred_prophet)
 rmse_p = np.sqrt(mean_squared_error(test_p["y"], pred_prophet))
 r2_p   = r2_score(test_p["y"], pred_prophet)
 
-print(f"\n📊 Prophet Evaluation ({city}):")
+print(f"\n Prophet Evaluation ({city}):")
 print(f"   MAE:  {mae_p:.3f} °C")
 print(f"   RMSE: {rmse_p:.3f} °C")
 print(f"   R²:   {r2_p:.3f}")
@@ -626,7 +626,7 @@ mae_xgb  = mean_absolute_error(y_test, pred_xgb)
 rmse_xgb = np.sqrt(mean_squared_error(y_test, pred_xgb))
 r2_xgb   = r2_score(y_test, pred_xgb)
 
-print(f"\n📊 XGBoost Evaluation ({city}):")
+print(f"\n XGBoost Evaluation ({city}):")
 print(f"   MAE:  {mae_xgb:.3f} °C")
 print(f"   RMSE: {rmse_xgb:.3f} °C")
 print(f"   R²:   {r2_xgb:.3f}")
@@ -658,7 +658,7 @@ ensemble_preds = meta_learner.predict(meta_X[train_meta:])
 mae_ens  = mean_absolute_error(meta_y[train_meta:], ensemble_preds)
 rmse_ens = np.sqrt(mean_squared_error(meta_y[train_meta:], ensemble_preds))
 
-print(f"\n📊 Ensemble Evaluation:")
+print(f"\n Ensemble Evaluation:")
 print(f"   MAE:  {mae_ens:.3f} °C")
 print(f"   RMSE: {rmse_ens:.3f} °C")
 ```
@@ -794,7 +794,7 @@ heat_data = [
 HeatMap(heat_data, radius=15, blur=10, min_opacity=0.3).add_to(m)
 
 m.save("reports/figures/global_temp_heatmap.html")
-print("✅ Spatial heatmap saved.")
+print(" Spatial heatmap saved.")
 ```
 
 ### 10.5 Geographical Patterns (Choropleth)
@@ -836,10 +836,10 @@ import pandas as pd
 
 df = pd.read_csv("data/weather_cleaned.csv", parse_dates=["last_updated"])
 
-app = dash.Dash(__name__, title="🌦️ Weather Forecasting Dashboard")
+app = dash.Dash(__name__, title=" Weather Forecasting Dashboard")
 
 app.layout = html.Div([
-    html.H1("🌦️ Global Weather Trend Forecasting",
+    html.H1(" Global Weather Trend Forecasting",
             style={"textAlign": "center", "color": "#FF6B35", "fontFamily": "Arial"}),
 
     html.P("PM Accelerator Mission: Empower the next generation of AI professionals.",

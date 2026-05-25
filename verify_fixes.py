@@ -27,12 +27,12 @@ passed = sum(checks.values())
 total = len(checks)
 
 for issue, status in sorted(checks.items()):
-    symbol = '✅' if status else '❌'
+    symbol = '' if status else ''
     print(f'{symbol} {issue}: {status}')
 
 print(f'\n{"-"*50}')
 print(f'RESULT: {passed}/{total} fixes applied')
 if passed == total:
-    print('✅ ALL FIXES COMPLETE - READY FOR SUBMISSION')
+    print(' ALL FIXES COMPLETE - READY FOR SUBMISSION')
 else:
-    print(f'⚠️ {total - passed} issues remain')
+    print(f' {total - passed} issues remain')

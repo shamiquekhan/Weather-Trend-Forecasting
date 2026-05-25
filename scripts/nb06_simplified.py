@@ -13,11 +13,11 @@ print("="*60)
 
 try:
     # Load data
-    print("\n✅ Loading dataset...")
+    print("\n Loading dataset...")
     df = pd.read_csv("data/weather_cleaned.csv", parse_dates=["last_updated"])
     
     # ==== ANALYSIS 1: Climate Pattern Analysis ====
-    print(f"\n✅ Analysis 1: Climate Pattern Analysis (Continental Trends)")
+    print(f"\n Analysis 1: Climate Pattern Analysis (Continental Trends)")
     # Group by continent and track temperature over time
     df["year_month"] = df["last_updated"].dt.to_period("M")
     climate_trends = df.groupby(["year_month", "country"]).agg({
@@ -33,7 +33,7 @@ try:
     print(f"   Temperature range: {climate_sample['temperature_celsius'].min():.2f}°C to {climate_sample['temperature_celsius'].max():.2f}°C")
     
     # ==== ANALYSIS 2: Environmental Impact (AQI vs Weather) ====
-    print(f"\n✅ Analysis 2: Environmental Impact (AQI vs Weather Correlation)")
+    print(f"\n Analysis 2: Environmental Impact (AQI vs Weather Correlation)")
     if "air_quality_us-epa-index" in df.columns:
         env_data = df[["temperature_celsius", "humidity", "air_quality_us-epa-index"]].dropna()
         correlation = env_data.corr()
@@ -43,7 +43,7 @@ try:
         print("   AQI column not available, skipping correlation analysis")
     
     # ==== ANALYSIS 3: SHAP Feature Importance ====
-    print(f"\n✅ Analysis 3: SHAP Feature Importance (XGBoost)")
+    print(f"\n Analysis 3: SHAP Feature Importance (XGBoost)")
     
     # Prepare data for XGBoost
     city = "London"
@@ -76,7 +76,7 @@ try:
         print(f"      {feat}: {imp:.4f}")
     
     # ==== ANALYSIS 4: Spatial Heatmap (Geographic Distribution) ====
-    print(f"\n✅ Analysis 4: Spatial Heatmap (City Temperature Distribution)")
+    print(f"\n Analysis 4: Spatial Heatmap (City Temperature Distribution)")
     
     city_temps = df.groupby("location_name").agg({
         "temperature_celsius": "mean",
@@ -98,7 +98,7 @@ try:
     print(f"   Saved: reports/figures/06_spatial_heatmap.html")
     
     # ==== ANALYSIS 5: Choropleth Map (Country-level Analysis) ====
-    print(f"\n✅ Analysis 5: Choropleth Map (Country Temperature)")
+    print(f"\n Analysis 5: Choropleth Map (Country Temperature)")
     
     country_temps = df.groupby("country").agg({
         "temperature_celsius": "mean",
@@ -110,15 +110,15 @@ try:
     print(f"   Saved analysis for {len(country_temps)} countries")
     
     # ==== SUMMARY STATISTICS ====
-    print(f"\n📊 Unique Analyses Summary:")
+    print(f"\n Unique Analyses Summary:")
     print(f"   Total locations: {df['location_name'].nunique()}")
     print(f"   Total countries: {df['country'].nunique()}")
     print(f"   Temperature range: {df['temperature_celsius'].min():.2f}°C to {df['temperature_celsius'].max():.2f}°C")
     print(f"   Data points: {len(df):,}")
     
-    print(f"\n🎉 Notebook 06 Complete!")
+    print(f"\n Notebook 06 Complete!")
     
 except Exception as e:
-    print(f"❌ ERROR: {str(e)}")
+    print(f" ERROR: {str(e)}")
     import traceback
     traceback.print_exc()

@@ -45,7 +45,7 @@ def plot_temperature_trends(
     
     if save_path:
         fig.write_html(save_path)
-        logger.info(f"✅ Saved temperature trends to {save_path}")
+        logger.info(f" Saved temperature trends to {save_path}")
     
     fig.show()
 
@@ -72,7 +72,7 @@ def plot_monthly_distribution(
     
     if save_path:
         plt.savefig(save_path, dpi=150)
-        logger.info(f"✅ Saved monthly distribution to {save_path}")
+        logger.info(f" Saved monthly distribution to {save_path}")
     
     plt.show()
 
@@ -108,7 +108,7 @@ def plot_precipitation_cities(
     
     if save_path:
         fig.write_html(save_path)
-        logger.info(f"✅ Saved precipitation chart to {save_path}")
+        logger.info(f" Saved precipitation chart to {save_path}")
     
     fig.show()
 
@@ -148,7 +148,7 @@ def plot_correlation_matrix(
     
     if save_path:
         plt.savefig(save_path, dpi=150)
-        logger.info(f"✅ Saved correlation matrix to {save_path}")
+        logger.info(f" Saved correlation matrix to {save_path}")
     
     plt.show()
 
@@ -188,7 +188,7 @@ def plot_anomalies(
     
     if save_path:
         fig.write_html(save_path)
-        logger.info(f"✅ Saved anomaly plot to {save_path}")
+        logger.info(f" Saved anomaly plot to {save_path}")
     
     fig.show()
     print(f"Total anomalies: {len(anomalies)} ({len(anomalies)/len(df)*100:.1f}%)")
@@ -215,7 +215,7 @@ def plot_precipitation_heatmap(
     
     if save_path:
         plt.savefig(save_path, dpi=150)
-        logger.info(f"✅ Saved precipitation heatmap to {save_path}")
+        logger.info(f" Saved precipitation heatmap to {save_path}")
     
     plt.show()
 

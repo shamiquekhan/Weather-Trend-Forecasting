@@ -1,4 +1,4 @@
-# 🌦️ Weather Prediction Project - Configuration & Data Source
+#  Weather Prediction Project - Configuration & Data Source
 
 ## Data Source
 
