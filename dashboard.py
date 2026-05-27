@@ -27,8 +27,8 @@ print(" Loading data...")
 df = pd.read_csv("data/weather_cleaned.csv", parse_dates=["last_updated"])
 df_anom = pd.read_csv("data/weather_with_anomalies.csv", parse_dates=["last_updated"])
 
-cities = sorted(df["location_name"].unique())
-countries = sorted(df["country"].unique())
+cities = sorted(df["location_name"].dropna().astype(str).unique())
+countries = sorted(df["country"].dropna().astype(str).unique())
 
 print(f" Loaded {len(cities)} cities from {len(countries)} countries")
 
@@ -83,20 +83,49 @@ app.layout = html.Div(style=STYLE, children=[
             html.Label(" Date Range:", style={"fontWeight": "700", "marginBottom": "10px"}),
             dcc.DatePickerRange(
                 id="date-range",
-                start_date=df["last_updated"].min(),
-                end_date=df["last_updated"].max(),
+                start_date=None,
+                end_date=None,
                 display_format="YYYY-MM-DD",
                 style={"width": "100%"}
-            )
+            ),
+            html.Div("Leave date range empty to use the full dataset range.", style={"fontSize": "12px", "color": "#94a3b8", "marginTop": "6px"})
         ], style={"flex": "1"})
     ], style={**CARD_STYLE, "display": "flex", "gap": "20px"}),
     
+    # Additional controls: metric selector, reset dates, download
+    html.Div([
+        html.Div([
+            html.Label("  Metric:", style={"fontWeight": "700", "marginBottom": "10px"}),
+            dcc.Dropdown(
+                id="metric-selector",
+                options=[
+                    {"label": "Temperature (°C)", "value": "temperature_celsius"},
+                    {"label": "Precipitation (mm)", "value": "precip_mm"},
+                    {"label": "Humidity (%)", "value": "humidity"},
+                ],
+                value="temperature_celsius",
+                style={"width": "100%", "padding": "10px", "borderRadius": "4px"}
+            )
+        ], style={"flex": "1", "marginRight": "20px"}),
+
+        html.Div([
+            html.Button("Reset Date Range", id="reset-dates", n_clicks=0, style={"marginRight": "10px"}),
+            html.Button("Download CSV", id="download-data", n_clicks=0),
+            dcc.Download(id="download-csv")
+        ], style={"display": "flex", "alignItems": "flex-end"})
+    ], style={**CARD_STYLE, "display": "flex", "gap": "20px"}),
     # Temperature Trend
     html.Div([
         html.H3(" Temperature Trend", style={"color": "#FF6B35", "marginBottom": "15px"}),
         dcc.Graph(id="temp-chart")
     ], style=CARD_STYLE),
     
+    # Country-level choropleth
+    html.Div([
+        html.H3(" Country Choropleth", style={"color": "#FF6B35", "marginBottom": "15px"}),
+        dcc.Graph(id="country-choropleth")
+    ], style=CARD_STYLE),
+
     # Precipitation
     html.Div([
         html.H3(" Precipitation Pattern", style={"color": "#FF6B35", "marginBottom": "15px"}),
@@ -143,17 +172,31 @@ def _filtered_city_rows(city, start_date, end_date):
 
 @app.callback(
     Output("temp-chart", "figure"),
-    [Input("city-selector", "value"), Input("date-range", "start_date"), Input("date-range", "end_date")]
+    [
+        Input("city-selector", "value"),
+        Input("date-range", "start_date"),
+        Input("date-range", "end_date"),
+        Input("metric-selector", "value")
+    ]
 )
-def update_temp_chart(city, start_date, end_date):
-    """Temperature trend over time"""
+def update_temp_chart(city, start_date, end_date, metric):
+    """Time-series for selected metric (defaults to temperature)"""
     filtered = _filtered_city_rows(city, start_date, end_date)
-    
-    fig = px.line(filtered, x="last_updated", y="temperature_celsius",
-                 title=f"Temperature Trend — {city}",
-                 labels={"temperature_celsius": "Temperature (°C)", "last_updated": "Date"},
+
+    label_map = {
+        "temperature_celsius": "Temperature (°C)",
+        "precip_mm": "Precipitation (mm)",
+        "humidity": "Humidity (%)"
+    }
+    y_label = label_map.get(metric, metric)
+
+    fig = px.line(filtered, x="last_updated", y=metric,
+                 title=f"{y_label} — {city}",
+                 labels={metric: y_label, "last_updated": "Date"},
                  template="plotly_white")
-    fig.update_traces(line=dict(color="#FF6B35", width=2))
+
+    line_color = "#FF6B35" if metric == "temperature_celsius" else ("#00d9ff" if metric == "precip_mm" else "#00aa88")
+    fig.update_traces(line=dict(color=line_color, width=2))
     fig.update_layout(hovermode="x unified", height=400, paper_bgcolor="#ffffff", plot_bgcolor="#ffffff")
     return fig
 
@@ -163,14 +206,44 @@ def update_temp_chart(city, start_date, end_date):
 )
 def update_precip_chart(city, start_date, end_date):
     """Precipitation trend"""
-    filtered = _filtered_city_rows(city, start_date, end_date)
-    
-    fig = px.bar(filtered, x="last_updated", y="precip_mm",
-                title=f"Daily Precipitation — {city}",
-                labels={"precip_mm": "Precipitation (mm)", "last_updated": "Date"},
-                template="plotly_white")
-    fig.update_traces(marker=dict(color="#00d9ff"))
+    filtered = _filtered_city_rows(city, start_date, end_date).copy()
+
+    # Ensure precip is numeric
+    filtered["precip_mm"] = pd.to_numeric(filtered["precip_mm"], errors="coerce").fillna(0.0)
+
+    # Aggregate by day to make bars visible and avoid overly-thin bars for dense timestamps
+    if not filtered.empty:
+        daily = (
+            filtered.set_index("last_updated")["precip_mm"]
+            .resample("D").sum()
+            .reset_index()
+        )
+    else:
+        daily = filtered.copy()
+
+    if daily.empty or daily["precip_mm"].sum() == 0:
+        # No precipitation in range — return a friendly empty figure
+        fig = go.Figure()
+        fig.update_layout(
+            title=f"Daily Precipitation — {city}",
+            template="plotly_white",
+            height=320,
+            paper_bgcolor="#ffffff",
+            plot_bgcolor="#ffffff",
+        )
+        fig.add_annotation(text="No precipitation recorded in the selected date range.", xref="paper", yref="paper", x=0.5, y=0.5, showarrow=False, font=dict(size=14, color="#64748b"))
+        return fig
+
+    max_val = daily["precip_mm"].max()
+    y_max = max_val * 1.1 if max_val > 0 else 1
+
+    fig = px.bar(daily, x="last_updated", y="precip_mm",
+                 title=f"Daily Precipitation — {city}",
+                 labels={"precip_mm": "Precipitation (mm)", "last_updated": "Date"},
+                 template="plotly_white")
+    fig.update_traces(marker=dict(color="#00d9ff"), hovertemplate="%{y:.2f} mm<br>%{x}<extra></extra>")
     fig.update_layout(hovermode="x unified", height=400, paper_bgcolor="#ffffff", plot_bgcolor="#ffffff")
+    fig.update_yaxes(range=[0, y_max])
     return fig
 
 @app.callback(
@@ -199,11 +272,22 @@ def update_model_comparison(city):
         }
     
     metrics_df = pd.DataFrame(metrics)
-    
-    fig = px.bar(metrics_df, x="Model", y="MAE", 
-                title="Model Performance Comparison (Lower = Better)",
-                template="plotly_white", color_discrete_sequence=["#FF6B35", "#00d9ff"])
-    fig.update_layout(height=400, hovermode="x", paper_bgcolor="#ffffff", plot_bgcolor="#ffffff")
+
+    fig = go.Figure(data=[
+        go.Bar(
+            x=metrics_df["Model"],
+            y=metrics_df["MAE"],
+            marker=dict(color=["#FF6B35", "#00d9ff"])
+        )
+    ])
+    fig.update_layout(
+        title="Model Performance Comparison (Lower = Better)",
+        template="plotly_white",
+        height=400,
+        hovermode="x",
+        paper_bgcolor="#ffffff",
+        plot_bgcolor="#ffffff"
+    )
     return fig
 
 @app.callback(
@@ -270,16 +354,24 @@ def update_anomaly_chart(city):
 def update_summary_stats(city, start_date, end_date):
     """Summary statistics cards"""
     filtered = _filtered_city_rows(city, start_date, end_date)
-    
+
     temp_avg = filtered["temperature_celsius"].mean()
     temp_max = filtered["temperature_celsius"].max()
     precip_total = filtered["precip_mm"].sum()
     humidity_avg = filtered["humidity"].mean()
-    
-    def stat_card(label, value, unit, color):
+
+    def fmt(v, unit=""):
+        if pd.isna(v):
+            return "—"
+        try:
+            return f"{v:.1f} {unit}" if unit else f"{v:.1f}"
+        except Exception:
+            return str(v)
+
+    def stat_card(label, display_value, color):
         return html.Div([
             html.Div(label, style={"fontSize": "12px", "color": "#94a3b8", "marginBottom": "5px"}),
-            html.Div(f"{value:.1f} {unit}", style={"fontSize": "24px", "fontWeight": "700", "color": color})
+            html.Div(display_value, style={"fontSize": "24px", "fontWeight": "700", "color": color})
         ], style={
             "backgroundColor": "#f8fafc",
             "padding": "15px",
@@ -288,13 +380,52 @@ def update_summary_stats(city, start_date, end_date):
             "textAlign": "center",
             "border": "1px solid #e2e8f0"
         })
-    
+
     return [
-        stat_card("Avg Temperature", temp_avg, "°C", "#FF6B35"),
-        stat_card("Max Temperature", temp_max, "°C", "#ff4444"),
-        stat_card("Total Precipitation", precip_total, "mm", "#00d9ff"),
-        stat_card("Avg Humidity", humidity_avg, "%", "#00ff88"),
+        stat_card("Avg Temperature", fmt(temp_avg, "°C"), "#FF6B35"),
+        stat_card("Max Temperature", fmt(temp_max, "°C"), "#ff4444"),
+        stat_card("Total Precipitation", fmt(precip_total, "mm"), "#00d9ff"),
+        stat_card("Avg Humidity", fmt(humidity_avg, "%"), "#00ff88"),
     ]
+
+
+# Reset date-range callback
+@app.callback(
+    [Output("date-range", "start_date"), Output("date-range", "end_date")],
+    [Input("reset-dates", "n_clicks")],
+    prevent_initial_call=True
+)
+def reset_dates(n_clicks):
+    if n_clicks:
+        return None, None
+    return dash.no_update, dash.no_update
+
+
+# CSV download callback
+@app.callback(
+    Output("download-csv", "data"),
+    [Input("download-data", "n_clicks")],
+    [State("city-selector", "value"), State("date-range", "start_date"), State("date-range", "end_date")],
+    prevent_initial_call=True
+)
+def download_csv(n_clicks, city, start_date, end_date):
+    filtered = _filtered_city_rows(city, start_date, end_date)
+    return dcc.send_data_frame(filtered.to_csv, filename=f"{city}_data.csv", index=False)
+
+
+# Country choropleth update
+@app.callback(
+    Output("country-choropleth", "figure"),
+    [Input("metric-selector", "value")]
+)
+def update_choropleth(metric):
+    if metric not in df.columns:
+        metric = "temperature_celsius"
+    country_avg = df.groupby("country")[metric].mean().reset_index()
+    fig = px.choropleth(country_avg, locations="country", locationmode="country names", color=metric,
+                        color_continuous_scale="RdYlBu_r", title=f"Average {metric} by Country", template="plotly_white")
+    fig.update_layout(height=450, paper_bgcolor="#ffffff", plot_bgcolor="#ffffff")
+    return fig
 
 # ====== RUN APP ======
 if __name__ == "__main__":
